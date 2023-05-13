@@ -1,7 +1,7 @@
-## Lab 2-6. QCheckBox
+## Lab 2-7. QRadioButton
 
 import sys
-from PyQt5.QtWidgets import QApplication, QWidget, QCheckBox
+from PyQt5.QtWidgets import QApplication, QWidget, QRadioButton
 from PyQt5.QtCore import Qt
 
 class MyApp(QWidget):
@@ -10,20 +10,17 @@ class MyApp(QWidget):
         self.initUI()
 
     def initUI(self):
-        cb = QCheckBox('Show Title', self)
-        cb.move(20, 20)
-        cb.toggle()
-        cb.stateChanged.connect(self.changeTitle)
+        rbtn1 = QRadioButton('First Button', self)
+        rbtn1.move(50, 50)
+        rbtn1.setChecked(True)
 
-        self.setWindowTitle('QCheckBox')
+        rbtn2 = QRadioButton(self)
+        rbtn2.move(50, 70)
+        rbtn2.setText('Second Button')
+
+        self.setWindowTitle('QRadioButton')
         self.setGeometry(300, 300, 300, 200)
         self.show()
-
-    def changeTitle(self, state):
-        if state == Qt.Checked:
-            self.setWindowTitle('QCheckBox')
-        else:
-            self.setWindowTitle(' ')
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)

@@ -1,7 +1,9 @@
-## Lab 2-14. QTabWidget
+## Lab 2-15. QPixmap
 
 import sys
-from PyQt5.QtWidgets import QApplication, QWidget, QTabWidget, QVBoxLayout
+from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QVBoxLayout
+from PyQt5.QtGui import QPixmap
+from PyQt5.QtCore import Qt
 
 class MyApp(QWidget):
     def __init__(self):
@@ -9,20 +11,20 @@ class MyApp(QWidget):
         self.initUI()
 
     def initUI(self):
-        tab1 = QWidget()
-        tab2 = QWidget()
+        pixmap = QPixmap('./images/landscape.jpg')
 
-        tabs = QTabWidget()
-        tabs.addTab(tab1, 'Tab1')
-        tabs.addTab(tab2, 'Tab2')
+        lbl_img = QLabel()
+        lbl_img.setPixmap(pixmap)
+        lbl_size = QLabel('Width: ' + str(pixmap.width()) + ', Height: ' + str(pixmap.height()))
+        lbl_size.setAlignment(Qt.AlignCenter)
 
         vbox = QVBoxLayout()
-        vbox.addWidget(tabs)
-
+        vbox.addWidget(lbl_img)
+        vbox.addWidget(lbl_size)
         self.setLayout(vbox)
 
-        self.setWindowTitle('QTabWidget')
-        self.setGeometry(300, 300, 300, 200)
+        self.setWindowTitle('QPixmap')
+        self.move(300, 300)
         self.show()
 
 if __name__ == '__main__':

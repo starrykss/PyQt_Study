@@ -1,8 +1,8 @@
-## Lab 2-20. QTimeEdit
+## Lab 2-21. QDateTimeEdit
 
 import sys
-from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QTimeEdit, QVBoxLayout
-from PyQt5.QtCore import QTime
+from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QDateTimeEdit, QVBoxLayout
+from PyQt5.QtCore import QDateTime
 
 class MyApp(QWidget):
     def __init__(self):
@@ -12,19 +12,19 @@ class MyApp(QWidget):
     def initUI(self):
         lbl = QLabel('QTimeEdit')
 
-        timeedit = QTimeEdit(self)
-        timeedit.setTime(QTime.currentTime())
-        timeedit.setTimeRange(QTime(3, 00, 00), QTime(23, 30, 00))
-        timeedit.setDisplayFormat('hh:mm:ss')
+        datetimeedit = QDateTimeEdit(self)
+        datetimeedit.setDateTime(QDateTime.currentDateTime())
+        datetimeedit.setDateTimeRange(QDateTime(1900, 1, 1, 00, 00, 00), QDateTime(2100, 1, 1, 00, 00, 00))
+        datetimeedit.setDisplayFormat('yyyy.MM.dd hh:mm:ss')
 
         vbox = QVBoxLayout()
         vbox.addWidget(lbl)
-        vbox.addWidget(timeedit)
+        vbox.addWidget(datetimeedit)
         vbox.addStretch()
 
         self.setLayout(vbox)
 
-        self.setWindowTitle('QTimeEdit')
+        self.setWindowTitle('QDateTimeEdit')
         self.setGeometry(300, 300, 300, 200)
         self.show()
 

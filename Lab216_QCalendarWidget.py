@@ -1,9 +1,8 @@
-## Lab 2-15. QPixmap
+## Lab 2-16. QCalendarWidget
 
 import sys
-from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QVBoxLayout
-from PyQt5.QtGui import QPixmap
-from PyQt5.QtCore import Qt
+from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QVBoxLayout, QCalendarWidget
+from PyQt5.QtCore import QDate
 
 class MyApp(QWidget):
     def __init__(self):
@@ -11,21 +10,26 @@ class MyApp(QWidget):
         self.initUI()
 
     def initUI(self):
-        pixmap = QPixmap('./images/landscape.jpg')
+        cal = QCalendarWidget(self)
+        cal.setGridVisible(True)
+        cal.clicked[QDate].connect(self.showDate)
 
-        lbl_img = QLabel()
-        lbl_img.setPixmap(pixmap)
-        lbl_size = QLabel('Width: ' + str(pixmap.width()) + ', Height: ' + str(pixmap.height()))
-        lbl_size.setAlignment(Qt.AlignCenter)
+        self.lbl = QLabel(self)
+        date = cal.selectedDate()
+        self.lbl.setText(date.toString())
 
         vbox = QVBoxLayout()
-        vbox.addWidget(lbl_img)
-        vbox.addWidget(lbl_size)
+        vbox.addWidget(cal)
+        vbox.addWidget(self.lbl)
+
         self.setLayout(vbox)
 
-        self.setWindowTitle('QPixmap')
-        self.move(300, 300)
+        self.setWindowTitle('QCalendarWidget')
+        self.setGeometry(300, 300, 400, 300)
         self.show()
+
+    def showDate(self, date):
+        self.lbl.setText(date.toString())
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)

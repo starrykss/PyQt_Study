@@ -1,46 +1,38 @@
-## Lab 2-10. QProgressBar
+## Lab 2-11. QSlider & QDial
 
 import sys
-from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QProgressBar
-from PyQt5.QtCore import QBasicTimer
+from PyQt5.QtWidgets import QApplication, QWidget, QSlider, QDial, QPushButton
+from PyQt5.QtCore import Qt
 
 class MyApp(QWidget):
-
     def __init__(self):
         super().__init__()
         self.initUI()
 
     def initUI(self):
-        self.pbar = QProgressBar(self)
-        self.pbar.setGeometry(30, 40, 200, 25)
+        self.slider = QSlider(Qt.Horizontal, self)
+        self.slider.move(30, 30)
+        self.slider.setRange(0, 50)
+        self.slider.setSingleStep(2)
 
-        self.btn = QPushButton('Start', self)
-        self.btn.move(40, 80)
-        self.btn.clicked.connect(self.doAction)
+        self.dial = QDial(self)
+        self.dial.move(30, 50)
+        self.dial.setRange(0, 50)
 
-        self.timer = QBasicTimer()
-        self.step = 0
+        btn = QPushButton('Default', self)
+        btn.move(35, 160)
 
-        self.setWindowTitle('QProgressBar')
-        self.setGeometry(300, 300, 300, 200)
+        self.slider.valueChanged.connect(self.dial.setValue)
+        self.dial.valueChanged.connect(self.slider.setValue)
+        btn.clicked.connect(self.button_clicked)
+
+        self.setWindowTitle('QSlider and QDial')
+        self.setGeometry(300, 300, 400, 200)
         self.show()
 
-    def timerEvent(self, e):
-        if self.step >= 100:
-            self.timer.stop()
-            self.btn.setText('Finished')
-            return
-
-        self.step = self.step + 1
-        self.pbar.setValue(self.step)
-
-    def doAction(self):
-        if self.timer.isActive():
-            self.timer.stop()
-            self.btn.setText('Start')
-        else:
-            self.timer.start(100, self)
-            self.btn.setText('Stop')
+    def button_clicked(self):
+        self.slider.setValue(0)
+        self.dial.setValue(0)
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)

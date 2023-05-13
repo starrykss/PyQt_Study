@@ -1,7 +1,7 @@
-## Lab 2-23. QTextBrowser
+## Lab 2-24. QTableWidget
 
 import sys
-from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QTextEdit, QVBoxLayout
+from PyQt5.QtWidgets import *
 
 class MyApp(QWidget):
     def __init__(self):
@@ -9,28 +9,28 @@ class MyApp(QWidget):
         self.initUI()
 
     def initUI(self):
-        self.lbl1 = QLabel('Enter your sentence:')
-        self.te = QTextEdit()
-        self.te.setAcceptRichText(False)
-        self.lbl2 = QLabel('The number of words is 0')
+        self.tableWidget = QTableWidget()
+        self.tableWidget.setRowCount(20)
+        self.tableWidget.setColumnCount(4)
 
-        self.te.textChanged.connect(self.text_changed)
+        # self.tableWidget.setEditTriggers(QAbstractItemView.NoEditTriggers)
+        # self.tableWidget.setEditTriggers(QAbstractItemView.DoubleClicked)
+        # self.tableWidget.setEditTriggers(QAbstractItemView.AllEditTriggers)
 
-        vbox = QVBoxLayout()
-        vbox.addWidget(self.lbl1)
-        vbox.addWidget(self.te)
-        vbox.addWidget(self.lbl2)
-        vbox.addStretch()
+        # self.tableWidget.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
+        self.tableWidget.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeToContents)
 
-        self.setLayout(vbox)
+        for i in range(20):
+            for j in range(4):
+                self.tableWidget.setItem(i, j, QTableWidgetItem(str(i + j)))
 
-        self.setWindowTitle('QTextEdit')
-        self.setGeometry(300, 300, 300, 200)
+        layout = QVBoxLayout()
+        layout.addWidget(self.tableWidget)
+        self.setLayout(layout)
+
+        self.setWindowTitle('QTableWidget')
+        self.setGeometry(300, 100, 600, 400)
         self.show()
-
-    def text_changed(self):
-        text = self.te.toPlainText()
-        self.lbl2.setText('The number of words is ' + str(len(text.split())))
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)

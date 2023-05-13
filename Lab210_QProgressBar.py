@@ -1,28 +1,46 @@
-## Lab 2-8. QLineEdit
+## Lab 2-10. QProgressBar
 
 import sys
-from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QLineEdit
+from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QProgressBar
+from PyQt5.QtCore import QBasicTimer
 
 class MyApp(QWidget):
+
     def __init__(self):
         super().__init__()
         self.initUI()
 
     def initUI(self):
-        self.lbl = QLabel(self)
-        self.lbl.move(60, 40)
+        self.pbar = QProgressBar(self)
+        self.pbar.setGeometry(30, 40, 200, 25)
 
-        qle = QLineEdit(self)
-        qle.move(60, 100)
-        qle.textChanged[str].connect(self.onChanged)
+        self.btn = QPushButton('Start', self)
+        self.btn.move(40, 80)
+        self.btn.clicked.connect(self.doAction)
 
-        self.setWindowTitle('QLineEdit')
+        self.timer = QBasicTimer()
+        self.step = 0
+
+        self.setWindowTitle('QProgressBar')
         self.setGeometry(300, 300, 300, 200)
         self.show()
 
-    def onChanged(self, text):
-        self.lbl.setText(text)
-        self.lbl.adjustSize()
+    def timerEvent(self, e):
+        if self.step >= 100:
+            self.timer.stop()
+            self.btn.setText('Finished')
+            return
+
+        self.step = self.step + 1
+        self.pbar.setValue(self.step)
+
+    def doAction(self):
+        if self.timer.isActive():
+            self.timer.stop()
+            self.btn.setText('Start')
+        else:
+            self.timer.start(100, self)
+            self.btn.setText('Stop')
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)

@@ -1,7 +1,7 @@
-## Lab 2-11. QSlider & QDial
+## Lab 2-12. QSplitter
 
 import sys
-from PyQt5.QtWidgets import QApplication, QWidget, QSlider, QDial, QPushButton
+from PyQt5.QtWidgets import QApplication, QWidget, QHBoxLayout, QFrame, QSplitter
 from PyQt5.QtCore import Qt
 
 class MyApp(QWidget):
@@ -10,29 +10,36 @@ class MyApp(QWidget):
         self.initUI()
 
     def initUI(self):
-        self.slider = QSlider(Qt.Horizontal, self)
-        self.slider.move(30, 30)
-        self.slider.setRange(0, 50)
-        self.slider.setSingleStep(2)
+        hbox = QHBoxLayout()
 
-        self.dial = QDial(self)
-        self.dial.move(30, 50)
-        self.dial.setRange(0, 50)
+        top = QFrame()
+        top.setFrameShape(QFrame.Box)
 
-        btn = QPushButton('Default', self)
-        btn.move(35, 160)
+        midleft = QFrame()
+        midleft.setFrameShape(QFrame.StyledPanel)
 
-        self.slider.valueChanged.connect(self.dial.setValue)
-        self.dial.valueChanged.connect(self.slider.setValue)
-        btn.clicked.connect(self.button_clicked)
+        midright = QFrame()
+        midright.setFrameShape(QFrame.Panel)
 
-        self.setWindowTitle('QSlider and QDial')
-        self.setGeometry(300, 300, 400, 200)
+        bottom = QFrame()
+        bottom.setFrameShape(QFrame.WinPanel)
+        bottom.setFrameShadow(QFrame.Sunken)
+
+        splitter1 = QSplitter(Qt.Horizontal)
+        splitter1.addWidget(midleft)
+        splitter1.addWidget(midright)
+
+        splitter2 = QSplitter(Qt.Vertical)
+        splitter2.addWidget(top)
+        splitter2.addWidget(splitter1)
+        splitter2.addWidget(bottom)
+
+        hbox.addWidget(splitter2)
+        self.setLayout(hbox)
+
+        self.setGeometry(300, 300, 300, 200)
+        self.setWindowTitle('QSplitter')
         self.show()
-
-    def button_clicked(self):
-        self.slider.setValue(0)
-        self.dial.setValue(0)
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)

@@ -1,7 +1,8 @@
-## Lab 2-18. QDoubleSpinBox
+## Lab 2-19. QDateEdit
 
 import sys
-from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QDoubleSpinBox, QVBoxLayout
+from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QDateEdit, QVBoxLayout
+from PyQt5.QtCore import QDate
 
 class MyApp(QWidget):
     def __init__(self):
@@ -9,30 +10,24 @@ class MyApp(QWidget):
         self.initUI()
 
     def initUI(self):
-        self.lbl1 = QLabel('QDoubleSpinBox')
-        self.dspinbox = QDoubleSpinBox()
-        self.dspinbox.setRange(0, 100)
-        self.dspinbox.setSingleStep(0.5)
-        self.dspinbox.setPrefix('$ ')
-        self.dspinbox.setDecimals(1)
-        self.lbl2 = QLabel('$ 0.0')
+        lbl = QLabel('QDateEdit')
 
-        self.dspinbox.valueChanged.connect(self.value_changed)
+        dateedit = QDateEdit(self)
+        dateedit.setDate(QDate.currentDate())
+        dateedit.setMinimumDate(QDate(1900, 1, 1))
+        dateedit.setMaximumDate(QDate(2100, 12, 31))
+        # dateedit.setDateRange(QDate(1900, 1, 1), QDate(2100, 12, 31))
 
         vbox = QVBoxLayout()
-        vbox.addWidget(self.lbl1)
-        vbox.addWidget(self.dspinbox)
-        vbox.addWidget(self.lbl2)
+        vbox.addWidget(lbl)
+        vbox.addWidget(dateedit)
         vbox.addStretch()
 
         self.setLayout(vbox)
 
-        self.setWindowTitle('QDoubleSpinBox')
+        self.setWindowTitle('QDateEdit')
         self.setGeometry(300, 300, 300, 200)
         self.show()
-
-    def value_changed(self):
-        self.lbl2.setText('$ ' + str(self.dspinbox.value()))
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)

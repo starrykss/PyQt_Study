@@ -1,7 +1,7 @@
-## Lab 2-3. 그리드 레이아웃
+## Lab 2-4. QPushButton
 
 import sys
-from PyQt5.QtWidgets import QApplication, QWidget, QGridLayout, QLabel, QLineEdit, QTextEdit
+from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QVBoxLayout
 
 class MyApp(QWidget):
     def __init__(self):
@@ -9,18 +9,24 @@ class MyApp(QWidget):
         self.initUI()
 
     def initUI(self):
-        grid = QGridLayout()
-        self.setLayout(grid)
+        btn1 = QPushButton('&Button1', self)
+        btn1.setCheckable(True)
+        btn1.toggle()
 
-        grid.addWidget(QLabel('Title: '), 0, 0)
-        grid.addWidget(QLabel('Author: '), 1, 0)
-        grid.addWidget(QLabel('Review: '), 2, 0)
+        btn2 = QPushButton(self)
+        btn2.setText('Button&2')
 
-        grid.addWidget(QLineEdit(), 0, 1)
-        grid.addWidget(QLineEdit(), 1, 1)
-        grid.addWidget(QTextEdit(), 2, 1)
+        btn3 = QPushButton('Button3', self)
+        btn3.setEnabled(False)
 
-        self.setWindowTitle('Grid Layout')
+        vbox = QVBoxLayout()
+        vbox.addWidget(btn1)
+        vbox.addWidget(btn2)
+        vbox.addWidget(btn3)
+
+        self.setLayout(vbox)
+
+        self.setWindowTitle('QPushButton')
         self.setGeometry(300, 300, 300, 200)
         self.show()
 
