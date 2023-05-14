@@ -1,4 +1,4 @@
-Python PyQt 
+Python PyQt5
 ---
 
 PyQt5 Study for making a project
@@ -7,3 +7,4 @@ PyQt5 Study for making a project
 
 ## Reference
 - https://doc.qt.io/qt-5/
+- https://wikidocs.net/book/2165
