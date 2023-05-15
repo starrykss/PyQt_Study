@@ -1,58 +1,71 @@
-## Simple Project 4. 화면 캡처 프로그램
-import os
+## Simple Project 5. 간단한 그림판 프로그램
+
 import sys
 from PyQt5.QtWidgets import *
-from PyQt5.QtCore import QTimer
-import pyautogui
-import datetime
+from PyQt5.QtGui import *
+from PyQt5.QtCore import *
 
-class MyApp(QWidget):
+class MyApp(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.delay_le = QLineEdit(self)
-        self.num_le = QLineEdit(self)
-        self.start_btn = QPushButton('Capture', self)
-
-        self.delay, self.num_cap = 0, 0
+        self.image = QImage(QSize(400, 400), QImage.Format_RGB32)
+        self.image.fill(Qt.white)
+        self.drawing = False
+        self.brush_size = 5
+        self.brush_color = Qt.black
+        self.last_point = QPoint()
         self.initUI()
 
     def initUI(self):
-        self.delay_le.setPlaceholderText('캡처 간격 (초)')
-        self.num_le.setPlaceholderText('캡처 횟수')
-        self.start_btn.clicked.connect(self.start_btn_click)
+        menubar = self.menuBar()
+        menubar.setNativeMenuBar(False)
+        filemenu = menubar.addMenu('File')
 
-        hbox = QHBoxLayout()
-        hbox.addWidget(self.delay_le)
-        hbox.addWidget(self.num_le)
+        save_action = QAction('Save', self)
+        save_action.setShortcut('Ctrl+S')
+        save_action.triggered.connect(self.save)
 
-        vbox = QVBoxLayout()
-        vbox.addLayout(hbox)
-        vbox.addWidget(self.start_btn)
+        clear_action = QAction('Clear', self)
+        clear_action.setShortcut('Ctrl+C')
+        clear_action.triggered.connect(self.clear)
 
-        self.setLayout(vbox)
+        filemenu.addAction(save_action)
+        filemenu.addAction(clear_action)
 
-        self.setWindowTitle('Capture')
-        self.setGeometry(200, 200, 300, 150)
+        self.setWindowTitle('Simple Painter')
+        self.setGeometry(300, 300, 400, 400)
         self.show()
 
-    def start_btn_click(self):
-        self.delay = int(self.delay_le.text())
-        self.num_cap = 0
-        self.timer = QTimer()
-        self.timer.start(self.delay * 1000)
-        self.timer.timeout.connect(self.capture)
-        print("캡처되었습니다. 현재 경로 : " + os.getcwd())
+    def paintEvent(self, e):
+        canvas = QPainter(self)
+        canvas.drawImage(self.rect(), self.image, self.image.rect())
 
-    def capture(self):
-        today = datetime.datetime.today()
-        today = today.strftime("%Y-%m-%d %H_%M_%S")    # 윈도우에서 : 사용 불가, 따라서 :를 _로 대체한다.
-        file_name = today + '.png'
-        print("파일 이름 : " + file_name)
-        pyautogui.screenshot(file_name)     # 현재 경로에 스크린샷 사진 저장하기
-        self.num_cap += 1
+    def mousePressEvent(self, e):
+        if e.button() == Qt.LeftButton:
+            self.drawing = True
+            self.last_point = e.pos()
 
-        if self.num_cap == int(self.num_le.text()):
-            self.timer.stop()
+    def mouseMoveEvent(self, e):
+        if (e.buttons() & Qt.LeftButton) & self.drawing:
+            painter = QPainter(self.image)
+            painter.setPen(QPen(self.brush_color, self.brush_size, Qt.SolidLine, Qt.RoundCap))
+            painter.drawLine(self.last_point, e.pos())
+            self.last_point = e.pos()
+            self.update()
+
+    def mouseReleaseEvent(self, e):
+        if e.button() == Qt.LeftButton:
+            self.drawing = False
+
+    def save(self):
+        fpath, _ = QFileDialog.getSaveFileName(self, 'Save Image', '', "PNG(*.png);;JPEG(*.jpg *.jpeg);;All Files(*.*) ")
+
+        if fpath:
+            self.image.save(fpath)
+
+    def clear(self):
+        self.image.fill(Qt.white)
+        self.update()
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
