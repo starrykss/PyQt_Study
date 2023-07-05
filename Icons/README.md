@@ -17,6 +17,10 @@ from PyQt5.QtWidgets import QStyle
 ![QStyle Standard Icon Checker](./images/QStyleStandardIconChecker.png)
 
 
+### Reference
+- https://doc.qt.io/qt-6/qstyle.html
+- https://dev-astra.tistory.com/377
+
 ## ② `pyqt5-fugueicons` Icons
 
 ### Install
@@ -45,3 +49,4 @@ import pyqt5_fugueicons as fugue
 
 ### Reference
 - https://pypi.org/project/pyqt5-fugueicons/
+- https://dev-astra.tistory.com/428
