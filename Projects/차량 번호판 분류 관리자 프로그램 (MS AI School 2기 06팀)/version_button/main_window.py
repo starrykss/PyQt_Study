@@ -12,8 +12,6 @@ from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtWebEngineWidgets import *
 
-from make_new_window import *
-
 from datetime import datetime
 
 
