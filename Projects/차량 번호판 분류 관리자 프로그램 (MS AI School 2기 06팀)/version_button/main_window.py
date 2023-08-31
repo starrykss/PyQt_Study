@@ -21,7 +21,7 @@ class MainWindow(QMainWindow):
 
         # 전역 변수
         self.video_source = None
-        self.button_return_values = {}    # 버튼 출력값 처리
+        self.button_return_value = 0    # 버튼 출력값 처리
 
         self.setWindowTitle("EV 차량 번호판 감지 프로그램")
         self.setGeometry(100, 100, 1200, 800)
@@ -603,9 +603,12 @@ class MainWindow(QMainWindow):
 
     # 버튼 클릭 이벤트 처리
     def on_button_click(self, type):
-        ok = QMessageBox.information(self, "알림", f"{type}을(를) 클릭하였습니다. 맞습니까?")
-        
-        if ok:
+        self.button_return_value = 0    # 초기화
+
+        ok = QMessageBox.information(self, "알림", f"{type}을(를) 클릭하였습니다. 맞습니까?", QMessageBox.Yes | QMessageBox.No)
+
+        if ok == QMessageBox.Yes:
+
             if type == "EV":
                 self.button_return_value = 1
 
